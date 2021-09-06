@@ -54,7 +54,7 @@ jobs:
         OS_TYPE: 'doxygen'
         OS_VERSION: focal
         artifactName: 'Linux-Ubuntu-20.04-x86_64'
-        PACKAGE_TO_INSTALL: 'build/*.deb'
+        PACKAGE_TO_INSTALL: 'libm2k_docs.tar.gz'
   pool:
     vmImage: $(imageName)
   steps:

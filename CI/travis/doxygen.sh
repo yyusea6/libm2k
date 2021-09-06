@@ -29,16 +29,21 @@ then
         pushd ${TOP_DIR}
         git fetch --depth 1 origin +refs/heads/gh-pages:gh-pages
         git checkout gh-pages
+	mkdir -p ${TOP_DIR}/python
 
         cp -R ${TOP_DIR}/build/doc/doxygen_doc/html/* ${TOP_DIR}
+        cp -R ${TOP_DIR}/build/doc/doxygen_doc/python/* ${TOP_DIR}/python
 
         sudo rm -rf ${TOP_DIR}/doc
+        sudo rm -rf ${TOP_DIR}/build
 
 	# Need to create a .nojekyll file to allow filenames starting with an underscore
 	# to be seen on the gh-pages site. Therefore creating an empty .nojekyll file.
 	if [ ! -f ".nojekyll" ] ; then
 		touch .nojekyll
 	fi
+
+	tar -czvf ${TOP_DIR}/libm2k_docs.tar.gz ${TOP_DIR}
 
         GH_CURRENT_COMMIT=$(git log -1 --pretty=%B)
         if [[ ${GH_CURRENT_COMMIT:(-7)} != ${CURRENT_COMMIT:0:7} ]]
@@ -55,5 +60,22 @@ then
                 echo_green "Documentation already up to date!"
         fi
 else
+	pushd ${TOP_DIR}
+        git fetch --depth 1 origin +refs/heads/gh-pages:gh-pages
+        git checkout gh-pages
+	mkdir -p ${TOP_DIR}/python
+
+        cp -R ${TOP_DIR}/build/doc/doxygen_doc/html/* ${TOP_DIR}
+        cp -R ${TOP_DIR}/build/doc/doxygen_doc/python/* ${TOP_DIR}/python
+
+        sudo rm -rf ${TOP_DIR}/doc
+        sudo rm -rf ${TOP_DIR}/build
+
+	# Need to create a .nojekyll file to allow filenames starting with an underscore
+	# to be seen on the gh-pages site. Therefore creating an empty .nojekyll file.
+	if [ ! -f ".nojekyll" ] ; then
+		touch .nojekyll
+	fi
+	tar -czvf ${TOP_DIR}/libm2k_docs.tar.gz ${TOP_DIR}/doc
         echo_green "Documentation will be updated when this commit gets on master!"
 fi
